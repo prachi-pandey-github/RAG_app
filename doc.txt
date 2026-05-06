@@ -1,0 +1,176 @@
+PROJECT DOCUMENTATION (Summarizer)
+Date: 2026-02-24
+Workspace: C:\Users\prachi pandey\Desktop\Summarizer
+
+==================================================
+1) PROJECT OVERVIEW
+==================================================
+This project performs:
+- PDF to image conversion
+- OCR text extraction (Tesseract by default, optional TrOCR)
+- Document summarization using Groq-hosted Llama model
+- Optional object detection/cropping of machine-related objects from PDF pages using Grounding DINO
+
+Core app files:
+- main.py           -> FastAPI app entrypoint
+- api.py            -> FastAPI API (same structure as main.py)
+- trocr.py          -> OCR + summarization pipeline
+- yolo.py           -> PDF page object detection and crop extraction
+- requirements.txt  -> declared Python dependencies
+- Dockerfile        -> container setup
+
+==================================================
+2) PYTHON + RUNTIME SPECS
+==================================================
+Active local virtual environment:
+- Environment type: VirtualEnvironment
+- Python version: 3.13.7
+- Interpreter: C:/Users/prachi pandey/Desktop/Summarizer/.venv/Scripts/python.exe
+
+Container runtime (Dockerfile):
+- Base image: python:3.11-slim
+- Exposed port: 8000
+- Start command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+==================================================
+3) DECLARED PYTHON LIBRARIES (requirements.txt)
+==================================================
+- fastapi
+- uvicorn[standard]
+- pdf2image
+- pillow
+- pytesseract
+- python-dotenv
+- groq
+- google-generativeai
+
+==================================================
+4) INSTALLED LIBRARIES + VERSIONS (CURRENT .venv)
+==================================================
+Important/used by code:
+- fastapi==0.129.0
+- uvicorn==0.40.0
+- pdf2image==1.17.0
+- pillow==12.1.1
+- pytesseract==0.3.13
+- python-dotenv==1.2.1
+- groq==1.0.0
+- google-generativeai==0.8.6
+- torch==2.10.0
+- torchvision==0.25.0
+- transformers==5.1.0
+- ultralytics==8.4.14
+- opencv-python==4.13.0.92
+- numpy==2.4.2
+- python-multipart==0.0.22 (needed by FastAPI file/form uploads)
+
+Other installed packages are present in the environment but may not be directly used by the current code paths.
+
+==================================================
+5) MODELS USED + VERSION/CHECKPOINT DETAILS
+==================================================
+A) Object Detection (Grounding DINO)
+- Model type: Zero-shot object detection
+- Framework: Hugging Face Transformers
+- Model ID (checkpoint): IDEA-Research/grounding-dino-base
+- Loaded in: yolo.py
+- Notes: Uses text prompt to detect machine/equipment/electronics objects in PDF page images.
+
+B) OCR Model (Optional TrOCR path)
+- Model type: Transformer OCR (VisionEncoderDecoder)
+- Framework: Hugging Face Transformers
+- Model ID (checkpoint): microsoft/trocr-base-printed
+- Loaded in: trocr.py when use_tesseract=False
+- Notes: Suitable for line/image OCR; currently optional in code.
+
+C) Default OCR Engine (Current default path)
+- Engine: Tesseract OCR
+- Accessed via: pytesseract
+- Loaded in: trocr.py when use_tesseract=True (default)
+- Notes: Uses local tesseract binary (Windows path auto-checked in code).
+
+D) Summarization LLM
+- Provider SDK: groq
+- Model name used: llama-3.3-70b-versatile
+- Called in: trocr.py function summarize_with_llama()
+- Notes: Requires GROQ_API_KEY in .env or environment variable.
+
+E) Local YOLO Weights File
+- File present: yolov8n.pt
+- Location: project root
+- Notes: Legacy/commented YOLO code exists in yolo.py; active implementation currently uses Grounding DINO.
+
+Version pinning caveat:
+- Remote model revisions are not explicitly pinned by revision/hash in code.
+- This means exact remote checkpoint revision can change over time unless revision is specified.
+
+==================================================
+6) SYSTEM DEPENDENCIES
+==================================================
+Dockerfile installs:
+- poppler-utils
+- tesseract-ocr
+- tesseract-ocr-eng
+
+Local Windows setup in project:
+- Bundled Poppler directory exists: poppler-25.12.0/Library/bin
+- yolo.py resolves POPPLER_PATH automatically or via env var
+- trocr.py uses bundled Poppler if found
+
+Tesseract binary path handling (Windows):
+- trocr.py checks: C:\Program Files\Tesseract-OCR\tesseract.exe
+
+==================================================
+7) API / APPLICATION SPEC
+==================================================
+FastAPI application:
+- App title: TrOCR PDF API
+- App version: 1.0.0
+- Endpoint: POST /ocr
+
+/ocr input parameters:
+- file: UploadFile (PDF only)
+- use_tesseract: bool (default True)
+- dpi: int (default 300)
+- include_text: bool (default False)
+
+/ocr behavior:
+1. Validates uploaded file is PDF
+2. Converts PDF pages to images
+3. Runs OCR per page
+4. Summarizes extracted text using Groq Llama model
+5. Returns summary (and optionally full text)
+
+==================================================
+8) OUTPUTS / ARTIFACTS
+==================================================
+- output.txt      -> OCR extracted text
+- summary.txt     -> generated summary
+- machine_crops/  -> cropped detected object images from yolo.py pipeline
+
+==================================================
+9) IMPORTANT ENVIRONMENT VARIABLES
+==================================================
+- GROQ_API_KEY : required for summarization call to Groq API
+- POPPLER_PATH : optional override for Poppler binaries path
+
+==================================================
+10) RUN NOTES
+==================================================
+Typical API run command:
+- uvicorn main:app --host 0.0.0.0 --port 8000
+
+Python script mode examples:
+- python trocr.py  (OCR + summary pipeline)
+- python yolo.py   (machine object detection + cropping)
+
+==================================================
+11) CURRENT ARCHITECTURE SUMMARY
+==================================================
+Primary flow in current codebase:
+PDF -> pdf2image -> OCR (Tesseract default / TrOCR optional) -> Groq Llama summary
+
+Parallel utility flow:
+PDF -> Grounding DINO detection -> object crops saved to machine_crops/
+
+END OF DOCUMENT

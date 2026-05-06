@@ -1,0 +1,197 @@
+PIPELINE DOCUMENTATION
+Project: Summarizer
+File documented: pipeline.py
+Date: 2026-02-24
+
+==================================================
+1) PURPOSE
+==================================================
+pipeline.py is a unified script that performs all major processing steps in one run:
+1. Extract text from a PDF using OCR.
+2. Summarize the extracted text using Groq-hosted Llama model.
+3. Extract machine/equipment-related image crops from PDF pages using Grounding DINO.
+
+In short:
+PDF -> OCR -> Text File -> LLM Summary -> Summary File
+PDF -> Object Detection -> Cropped Images Folder
+
+==================================================
+2) WHAT PIPELINE.PY INTEGRATES
+==================================================
+- Text extraction + summary logic from trocr.py (used by main.py API flow)
+- Image extraction/object detection logic from yolo.py
+
+This gives one executable script for both outcomes:
+- output.txt + summary.txt
+- machine_crops/ image crops
+
+==================================================
+3) EXECUTION FLOW (STEP-BY-STEP)
+==================================================
+A) Input validation
+- Checks whether the input PDF exists.
+- Raises FileNotFoundError if missing.
+
+B) OCR and text extraction
+- Creates TrOCRPdfExtractor with either:
+  - Tesseract OCR (default), or
+  - TrOCR model (if --use-trocr is provided).
+- Converts each PDF page to image and extracts text.
+- Saves full extracted text into output.txt (or custom --output-text path).
+
+C) Summarization
+- Calls summarize_with_llama(full_text).
+- Uses Groq chat completion with model: llama-3.3-70b-versatile.
+- Saves summary into summary.txt (or custom --output-summary path).
+
+D) Image extraction
+- Loads Grounding DINO model: IDEA-Research/grounding-dino-base.
+- Converts PDF pages to images.
+- Runs zero-shot object detection using a machine/electronics text prompt.
+- Crops detected regions and saves JPG files into machine_crops/ (or custom --crops-folder).
+
+E) Completion output
+- Prints final summary paths and total number of extracted image crops.
+
+==================================================
+4) MODELS USED IN PIPELINE.PY (SPECS)
+==================================================
+1. OCR path (default)
+- Engine: Tesseract OCR
+- Python wrapper: pytesseract
+- Selection: default behavior (use_tesseract=True)
+
+2. OCR path (optional)
+- Model: microsoft/trocr-base-printed
+- Framework: Hugging Face Transformers
+- Enabled with: --use-trocr
+
+3. Text summarization model
+- Provider: Groq API
+- Model: llama-3.3-70b-versatile
+- Function: summarize_with_llama()
+
+4. Object detection model
+- Model: IDEA-Research/grounding-dino-base
+- Framework: Hugging Face Transformers
+- Task: zero-shot object detection for machine/equipment terms
+
+==================================================
+5) LIBRARIES USED BY PIPELINE.PY
+==================================================
+Direct imports in pipeline.py:
+- argparse
+- os
+- cv2 (opencv-python)
+- numpy
+- torch
+- pdf2image
+- transformers
+- trocr (local module import)
+
+Used through trocr.py functions called by pipeline.py:
+- pytesseract
+- pillow (PIL)
+- groq
+- python-dotenv
+
+==================================================
+6) REQUIRED EXTERNAL DEPENDENCIES
+==================================================
+1. Poppler (required by pdf2image)
+- Pipeline resolves in this order:
+  a) POPPLER_PATH environment variable (if valid)
+  b) poppler-25.12.0/Library/bin next to script
+  c) poppler-25.12.0/Library/bin in current working directory
+
+2. Tesseract (required if using default OCR mode)
+- On Windows, trocr.py checks:
+  C:\Program Files\Tesseract-OCR\tesseract.exe
+
+3. Groq API key (required for summary)
+- Environment variable: GROQ_API_KEY
+- Can be loaded from .env via python-dotenv
+
+==================================================
+7) CLI ARGUMENTS (PIPELINE.PY SPECS)
+==================================================
+- --pdf
+  Type: str
+  Default: input.pdf
+  Description: path to input PDF file
+
+- --dpi
+  Type: int
+  Default: 300
+  Description: PDF rendering DPI for OCR and detection
+
+- --use-tesseract
+  Type: bool flag
+  Default behavior: True
+  Description: use Tesseract OCR
+
+- --use-trocr
+  Type: bool flag
+  Default: False
+  Description: override default and use TrOCR instead
+
+- --output-text
+  Type: str
+  Default: output.txt
+  Description: output path for extracted OCR text
+
+- --output-summary
+  Type: str
+  Default: summary.txt
+  Description: output path for final summary
+
+- --crops-folder
+  Type: str
+  Default: machine_crops
+  Description: folder path for detected image crops
+
+- --conf-threshold
+  Type: float
+  Default: 0.35
+  Description: detection confidence threshold
+
+- --text-threshold
+  Type: float
+  Default: 0.25
+  Description: Grounding DINO text threshold
+
+==================================================
+8) INPUTS AND OUTPUTS
+==================================================
+Input:
+- PDF file (default: input.pdf)
+
+Outputs:
+- output.txt       -> extracted full OCR text
+- summary.txt      -> LLM-generated summary
+- machine_crops/   -> detected object crop images (.jpg)
+
+==================================================
+9) HOW TO RUN
+==================================================
+Default run (Tesseract OCR):
+python pipeline.py
+
+Use TrOCR instead of Tesseract:
+python pipeline.py --use-trocr
+
+Custom input PDF:
+python pipeline.py --pdf your_file.pdf
+
+Custom output paths/folder:
+python pipeline.py --output-text my_text.txt --output-summary my_summary.txt --crops-folder my_crops
+
+==================================================
+10) NOTES / LIMITATIONS
+==================================================
+- Remote model revisions are not pinned with explicit revision hashes.
+- Larger PDFs and higher DPI increase memory and processing time.
+- Summary generation will fail without a valid GROQ_API_KEY.
+- Tesseract quality depends on image quality and language data availability.
+
+END OF FILE

@@ -1,0 +1,41 @@
+**Summary of GMEET Al Edge Device 2200 ON (Jetson Orin Nano Super)**
+
+The GMEET Al Edge Device 2200 ON is a compact, powerful edge AI device designed for various applications, including video analytics, education, industrial robotics, retail, healthcare, and manufacturing. It is based on the NVIDIA Jetson Orin Nano module, which provides a high-performance AI processing platform.
+
+**Key Features:**
+
+1. **Processor:** 6-core Arm Cortex-A78AE v8.2 64-bit CPU with 1.5MB L2 + 4MB L3 cache
+2. **GPU:** 8G: 1024-core NVIDIA Ampere architecture GPU with 32 Tensor Cores or 4G: 512-core NVIDIA Ampere architecture GPU with 16 Tensor Cores
+3. **Memory:** 8GB LPDDR5 or 4GB LPDDR5
+4. **Storage:** M.2 SD Card (1 x M.2 2280, NVMe, PCle x4) and Micro SD card slot
+5. **I/O:**
+	* Ethernet: 1 x 10/100/1000 Mbps
+	* Display: USB HDMI (max. resolution 3840x2160 @ 60Hz)
+	* USB: 3 x USB 3.2 Gen 2 (external), 1 x USB 2.0 (internal, via pin header)
+	* OTG USB: 1 x Micro USB
+6. **Expansion:**
+	* PCle M.2 Key for WiFi and Bluetooth
+	* M.2 (B-Key, Signal: USB, GSM)
+	* 40 Pin GPIO
+	* 2 x Ethernet, 2 x ADMI Out
+7. **Power:** 12V, 5A DC
+8. **Environmental Specifications:**
+	* Operating Temperature: -10 ~ 60 °C with 0.7 m/s air flow
+	* Operating Humidity: 95% @ 40 °C (non-condensing)
+	* Vibration: 3 Grms @ 5 ~ 500 Hz, random, 1 hr/axis
+	* Shock: 10G/11ms
+9. **Mechanical:**
+	* Dimensions: 120 x 90 x 65 mm (5.1" x 5.1" x 1.8")
+	* Weight: 1.2 kg (2.65 lb)
+10. **BSP (Board Support Package):** Jetpack Above 6.2 (Above Linux Ubuntu 22.04)
+
+**Target Applications:**
+
+1. Video Analytics
+2. Education
+3. Industrial Robotics
+4. Retail
+5. Healthcare
+6. Manufacturing
+
+The GMEET Al Edge Device 2200 ON is designed to provide a powerful and flexible platform for developing and deploying AI applications at the edge, with a focus on low power consumption, compact size, and high-performance processing.

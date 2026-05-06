@@ -1,0 +1,8 @@
+.env
+.venv
+__pycache__/
+*.pyc
+poppler-25.12.0/
+output.txt
+summary.txt
+input.pdf

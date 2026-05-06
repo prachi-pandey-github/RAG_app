@@ -1,0 +1,89 @@
+
+--- Page 1 ---
+GMEET Al Edge Device 2200 ON > GMEET
+Jetson Orin Nano Super
+
+EDGE AI. ANYWHERE. ANYTIME
+
+Video Analytics
+Education
+Industrial Robotics
+Retail
+
+Healthcare
+
+Manufacturing
+Our Al Edge Device are designed for NVIDIA
+Jetson Nano, TX2, Xavier NX, Orin Nano and
+Orin NX modules. Our range of Ai edge
+Device are ideal for building applications of
+video analytics, object detection, natural
+language processing, medical imaging, and
+our Carrier boards are ideal for Devlopment
+Kit, robotic, drones and Smart Cart.
+
+I/O
+
+¢ Ethernet 1 x 10/100/1000 Mbps
+
+¢ Display USB HDMI (Max. resolution
+Features § NVIDIA@® Jetson Orin™ Nano 3840x2160 @60HZz)
+
+¢ External: 3 x USB 3.2 Gen 2,
+
+- Internal: 1 x USB 2.0 (by pin header)
+
+Specifications
+
+Processor Systems
+
+CPU 6-core Arm® Cortex®-A78AE - OTG USB 1 x Micro USB
+v8.2 64-bit CPU 1.5MB L2 +
+4MB L3 Expansion
+GPU 8G: 1024-core NVIDIA Ampere > PCle M.2 Key WiFi & Bluetooth
+architecture GPU with 32 Tensor - M.2 (B-Key, Signal: USB GSM)
+Cores - CAN, 40 Pin GPIO
+4G: 512-core NVIDIA Ampere > 2x Ethernet, 2 xADMI Out
+architecture GPU with 16 Tensor
+Storage
+Cores
+
+¢ M.2 SD Card 1 x M.2 2280 (M-Key, NVMe,
+Memory 8GB: 8GB LPDDR5 Signal: PCle x4)
+
+4GB: 4GB LPDDR5 - 1x Micro SD
+
+GMEET ELECTRONICS PRIVATE LIMITED
+
+1409, B Wing Kailash Business Park, Hiranandani Link Road, Vikhroli West Mumbai - 400079, Maharashtra, India
+
+GMEET Al Edge Device 2200 ON > GMEET
+Jetson Orin Nano Super
+
+EDGE AI. ANYWHERE. ANYTIME
+
+Power
+- 12V5ADC
+
+Environment
+
+- Operating Temperature* Operating Humidity
+Vibration -10 ~ 60 °C with 0.7 m/s air flow
+
+- 95% @ 40 °C (non-condensing)
+
+- 3 Grms @ 5 ~ 500 Hz, random, 1 hr/axis
+
+* Shock 10G/11ms
+
+Mechanical
+- Dimensions (W x D x H) 120 x 90 x 65 mm
+(5.1" x 5.1" x 1.8")
+¢ Weight 1.2 kg (2.65 Ib)
+
+BSP
+¢ Jetpack Above 6.2 (Above Linux Ubuntu 22.04)
+
+GMEET ELECTRONICS PRIVATE LIMITED
+
+1409, B Wing Kailash Business Park, Hiranandani Link Road, Vikhroli West Mumbai - 400079, Maharashtra, India
